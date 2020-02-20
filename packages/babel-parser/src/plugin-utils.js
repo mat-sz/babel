@@ -91,6 +91,7 @@ export function validatePlugins(plugins: PluginList) {
 import estree from "./plugins/estree";
 import flow from "./plugins/flow";
 import jsx from "./plugins/jsx";
+import dui from "./plugins/dui";
 import typescript from "./plugins/typescript";
 import placeholders from "./plugins/placeholders";
 import v8intrinsic from "./plugins/v8intrinsic";
@@ -99,6 +100,7 @@ import v8intrinsic from "./plugins/v8intrinsic";
 export const mixinPlugins: { [name: string]: MixinPlugin } = {
   estree,
   jsx,
+  dui,
   flow,
   typescript,
   v8intrinsic,
