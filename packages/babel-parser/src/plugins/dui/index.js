@@ -226,40 +226,64 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       return this.duiParseElementAt(startPos, startLoc);
     }
 
-    isAttributeListLookahead(): boolean {
+    isElementLookahead() {
+      if (!this.match(tt.name)) return false;
+
       const old = this.state;
       this.state = old.clone(true);
-
       this.isLookahead = true;
 
+      const lookaheadCharCode = this.lookaheadCharCode();
       let isPossibleElement = true;
+      let checkParameterList = lookaheadCharCode === charCodes.leftParenthesis;
 
-      this.next();
-      if (!this.match(tt.parenL)) {
-        isPossibleElement = false;
-      }
+      if (
+        lookaheadCharCode !== charCodes.leftCurlyBrace &&
+        lookaheadCharCode !== charCodes.leftParenthesis
+      ) {
+        let expectName = false;
 
-      this.next();
-      if (!this.match(tt.name)) {
-        isPossibleElement = false;
-      }
-
-      this.next();
-
-      if (this.match(tt.slash)) {
         while (true) {
           this.next();
-          if (!this.match(tt.name) && !this.match(tt.slash)) {
-            if (!this.match(tt.colon)) {
+          if (expectName) {
+            if (!this.match(tt.name)) {
               isPossibleElement = false;
+              break;
             }
+          } else if (!this.match(tt.slash) && !this.match(tt.dot)) {
+            isPossibleElement = this.match(tt.braceL) || this.match(tt.parenL);
+            checkParameterList = this.match(tt.parenL);
+
             break;
           }
+
+          expectName = !expectName;
         }
       }
 
-      if (!this.match(tt.colon)) {
-        isPossibleElement = false;
+      if (isPossibleElement && checkParameterList) {
+        this.next();
+        if (!this.match(tt.name)) {
+          isPossibleElement = false;
+        }
+
+        this.next();
+
+        if (this.match(tt.slash)) {
+          while (true) {
+            this.next();
+            if (!this.match(tt.name) && !this.match(tt.slash)) {
+              if (!this.match(tt.colon)) {
+                isPossibleElement = false;
+              }
+              break;
+            }
+          }
+        }
+
+        if (!this.match(tt.colon)) {
+          isPossibleElement = false;
+        }
       }
 
       this.isLookahead = false;
@@ -273,19 +297,9 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // ==================================
 
     parseExprAtom(refExpressionErrors: ?ExpressionErrors): N.Expression {
-      if (this.match(tt.name)) {
-        const lookaheadCharCode = this.lookaheadCharCode();
-        if (
-          lookaheadCharCode === charCodes.leftCurlyBrace ||
-          lookaheadCharCode === charCodes.slash
-        ) {
-          return this.duiParseElement();
-        } else if (
-          lookaheadCharCode === charCodes.leftParenthesis &&
-          this.isAttributeListLookahead()
-        ) {
-          return this.duiParseElement();
-        }
+      const lookaheadCharCode = this.isElementLookahead();
+      if (lookaheadCharCode) {
+        return this.duiParseElement();
       }
       return super.parseExprAtom(refExpressionErrors);
     }
