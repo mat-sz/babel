@@ -8,9 +8,9 @@ import { types as tt } from "../../tokenizer/types";
 import * as N from "../../types";
 import type { Position } from "../../util/location";
 
-// function isFragment(object: ?N.DUIElement): boolean {
-//   return object ? object.type === "JSXOpeningFragment" : false;
-// }
+function isFragment(object: ?N.DUIElement): boolean {
+  return object ? object.type === "JSXOpeningFragment" : false;
+}
 
 export default (superClass: Class<Parser>): Class<Parser> =>
   class extends superClass {
@@ -128,6 +128,11 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       startLoc: Position,
     ): N.DUIOpeningElement {
       const node = this.startNodeAt(startPos, startLoc);
+      if (this.match(tt.at)) {
+        this.expect(tt.at);
+        this.expect(tt.braceL);
+        return this.finishNode(node, "JSXOpeningFragment");
+      }
       node.name = this.duiParseElementName();
       return this.duiParseOpeningElementAfterName(node);
     }
@@ -148,7 +153,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           attributes.push(this.duiParseAttribute());
           first = false;
         }
-        //node.selfClosing = this.eat(tt.slash);
+        node.selfClosing = false; //this.eat(tt.slash);
         this.expect(tt.parenR);
       }
 
@@ -174,6 +179,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
             case tt.string:
             case tt.name:
+            case tt.at:
               children.push(this.parseExprAtom());
               break;
 
@@ -195,11 +201,11 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         }
       }
 
-      // if (isFragment(openingElement)) {
-      //   node.openingFragment = openingElement;
-      // } else {
-      //   node.openingElement = openingElement;
-      // }
+      if (isFragment(openingElement)) {
+        node.openingFragment = openingElement;
+      } else {
+        node.openingElement = openingElement;
+      }
 
       node.openingElement = openingElement;
       node.children = children;
@@ -211,11 +217,9 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       //   );
       // }
 
-      return this.finishNode(node, "JSXElement");
-
-      // return isFragment(openingElement)
-      //   ? this.finishNode(node, "JSXFragment")
-      //   : this.finishNode(node, "JSXElement");
+      return isFragment(openingElement)
+        ? this.finishNode(node, "JSXFragment")
+        : this.finishNode(node, "JSXElement");
     }
 
     // Parses entire DUI element from current position.
@@ -227,7 +231,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     }
 
     isElementLookahead() {
-      if (!this.match(tt.name)) return false;
+      if (!this.match(tt.name) && !this.match(tt.at)) return false;
 
       const old = this.state;
       this.state = old.clone(true);
@@ -253,7 +257,6 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           } else if (!this.match(tt.slash) && !this.match(tt.dot)) {
             isPossibleElement = this.match(tt.braceL) || this.match(tt.parenL);
             checkParameterList = this.match(tt.parenL);
-
             break;
           }
 
@@ -268,7 +271,6 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         }
 
         this.next();
-
         if (this.match(tt.slash)) {
           while (true) {
             this.next();
@@ -279,9 +281,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
               break;
             }
           }
-        }
-
-        if (!this.match(tt.colon)) {
+        } else if (!this.match(tt.colon)) {
           isPossibleElement = false;
         }
       }
@@ -297,10 +297,10 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // ==================================
 
     parseExprAtom(refExpressionErrors: ?ExpressionErrors): N.Expression {
-      const lookaheadCharCode = this.isElementLookahead();
-      if (lookaheadCharCode) {
+      if (this.isElementLookahead()) {
         return this.duiParseElement();
       }
+
       return super.parseExprAtom(refExpressionErrors);
     }
   };
