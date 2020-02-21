@@ -224,20 +224,67 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       return this.duiParseElementAt(startPos, startLoc);
     }
 
+    isAttributeListLookahead(): boolean {
+      const old = this.state;
+      this.state = old.clone(true);
+
+      this.isLookahead = true;
+
+      let isPossibleElement = true;
+
+      this.next();
+      if (!this.match(tt.parenL)) {
+        isPossibleElement = false;
+      }
+
+      this.next();
+      if (!this.match(tt.name)) {
+        isPossibleElement = false;
+      }
+
+      this.next();
+
+      if (this.match(tt.slash)) {
+        while (true) {
+          this.next();
+          if (!this.match(tt.name) && !this.match(tt.slash)) {
+            if (!this.match(tt.colon)) {
+              isPossibleElement = false;
+            }
+            break;
+          }
+        }
+      }
+
+      if (!this.match(tt.colon)) {
+        isPossibleElement = false;
+      }
+
+      this.isLookahead = false;
+      this.state = old;
+
+      return isPossibleElement;
+    }
+
     // ==================================
     // Overrides
     // ==================================
 
     parseExprAtom(refExpressionErrors: ?ExpressionErrors): N.Expression {
-      if (
-        this.match(tt.name) &&
-        (this.lookaheadCharCode() === charCodes.leftCurlyBrace ||
-          this.lookaheadCharCode() === charCodes.leftParenthesis ||
-          this.lookaheadCharCode() === charCodes.slash)
-      ) {
-        return this.duiParseElement();
-      } else {
-        return super.parseExprAtom(refExpressionErrors);
+      if (this.match(tt.name)) {
+        const lookaheadCharCode = this.lookaheadCharCode();
+        if (
+          lookaheadCharCode === charCodes.leftCurlyBrace ||
+          lookaheadCharCode === charCodes.slash
+        ) {
+          return this.duiParseElement();
+        } else if (
+          lookaheadCharCode === charCodes.leftParenthesis &&
+          this.isAttributeListLookahead()
+        ) {
+          return this.duiParseElement();
+        }
       }
+      return super.parseExprAtom(refExpressionErrors);
     }
   };
