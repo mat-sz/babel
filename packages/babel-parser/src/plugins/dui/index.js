@@ -32,16 +32,15 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // Parse namespaced identifier.
 
     duiParseNamespacedName(): N.DUINamespacedName {
-      // const startPos = this.state.start;
-      // const startLoc = this.state.startLoc;
+      const startPos = this.state.start;
+      const startLoc = this.state.startLoc;
       const name = this.duiParseIdentifier();
-      //if (!this.eat(tt.colon)) return name;
-      return name;
+      if (!this.eat(tt.slash)) return name;
 
-      // const node = this.startNodeAt(startPos, startLoc);
-      // node.namespace = name;
-      // node.name = this.duiParseIdentifier();
-      // return this.finishNode(node, "JSXNamespacedName");
+      const node = this.startNodeAt(startPos, startLoc);
+      node.namespace = name;
+      node.name = this.duiParseIdentifier();
+      return this.finishNode(node, "JSXNamespacedName");
     }
 
     // Parses element name in any form - namespaced, member
@@ -233,7 +232,8 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       if (
         this.match(tt.name) &&
         (this.lookaheadCharCode() === charCodes.leftCurlyBrace ||
-          this.lookaheadCharCode() === charCodes.leftParenthesis)
+          this.lookaheadCharCode() === charCodes.leftParenthesis ||
+          this.lookaheadCharCode() === charCodes.slash)
       ) {
         return this.duiParseElement();
       } else {
