@@ -135,9 +135,10 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     duiParseOpeningElementAfterName(
       node: N.DUIOpeningElement,
     ): N.DUIOpeningElement {
+      const attributes: N.DUIAttribute[] = [];
+
       if (this.match(tt.parenL)) {
         this.next();
-        const attributes: N.DUIAttribute[] = [];
         let first = true;
         while (!this.match(tt.parenR)) {
           if (!first) {
@@ -147,10 +148,11 @@ export default (superClass: Class<Parser>): Class<Parser> =>
           attributes.push(this.duiParseAttribute());
           first = false;
         }
-        node.attributes = attributes;
         //node.selfClosing = this.eat(tt.slash);
         this.expect(tt.parenR);
       }
+
+      node.attributes = attributes;
       this.nextToken();
       return this.finishNode(node, "JSXOpeningElement");
     }
