@@ -1,6 +1,6 @@
 {
   "name": "babel-parser-dui",
-  "version": "7.8.7",
+  "version": "7.8.8",
   "description": "A JavaScript parser (with DUI support)",
   "author": "Mat Sz <contact@matsz.dev>",
   "homepage": "https://github.com/mat-sz/DUI",
