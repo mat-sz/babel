@@ -108,10 +108,8 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
     duiParseAttribute(): N.DUIAttribute {
       const node = this.startNode();
-      if (this.eat(tt.braceL)) {
-        this.expect(tt.ellipsis);
+      if (this.eat(tt.ellipsis)) {
         node.argument = this.parseMaybeAssign();
-        this.expect(tt.braceR);
         return this.finishNode(node, "JSXSpreadAttribute");
       }
       node.name = this.duiParseNamespacedName();
