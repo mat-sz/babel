@@ -206,13 +206,6 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       node.openingElement = openingElement;
       node.children = children;
 
-      // if (this.isRelational("<")) {
-      //   throw this.raise(
-      //     this.state.start,
-      //     "Adjacent DUI elements must be wrapped in an enclosing tag.",
-      //   );
-      // }
-
       return isFragment(openingElement)
         ? this.finishNode(node, "JSXFragment")
         : this.finishNode(node, "JSXElement");

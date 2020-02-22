@@ -1,0 +1,135 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 13,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 13
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 13,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 13
+      }
+    },
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start": 0,
+        "end": 13,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 13
+          }
+        },
+        "expression": {
+          "type": "BinaryExpression",
+          "start": 0,
+          "end": 12,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 12
+            }
+          },
+          "left": {
+            "type": "JSXElement",
+            "start": 1,
+            "end": 7,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 1
+              },
+              "end": {
+                "line": 1,
+                "column": 7
+              }
+            },
+            "openingElement": {
+              "type": "JSXOpeningElement",
+              "start": 1,
+              "end": 6,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 1
+                },
+                "end": {
+                  "line": 1,
+                  "column": 6
+                }
+              },
+              "name": {
+                "type": "JSXIdentifier",
+                "start": 1,
+                "end": 4,
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 4
+                  }
+                },
+                "name": "div"
+              },
+              "attributes": []
+            },
+            "children": [],
+            "extra": {
+              "parenthesized": true,
+              "parenStart": 0
+            }
+          },
+          "operator": "<",
+          "right": {
+            "type": "Identifier",
+            "start": 11,
+            "end": 12,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 11
+              },
+              "end": {
+                "line": 1,
+                "column": 12
+              },
+              "identifierName": "x"
+            },
+            "name": "x"
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}

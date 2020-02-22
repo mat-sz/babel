@@ -1,0 +1,181 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 25,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 1,
+      "column": 25
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 25,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 25
+      }
+    },
+    "sourceType": "script",
+    "interpreter": null,
+    "body": [
+      {
+        "type": "ExpressionStatement",
+        "start": 0,
+        "end": 25,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 1,
+            "column": 25
+          }
+        },
+        "expression": {
+          "type": "ConditionalExpression",
+          "start": 0,
+          "end": 24,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 1,
+              "column": 24
+            }
+          },
+          "test": {
+            "type": "BooleanLiteral",
+            "start": 0,
+            "end": 4,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 1,
+                "column": 4
+              }
+            },
+            "value": true
+          },
+          "consequent": {
+            "type": "JSXElement",
+            "start": 8,
+            "end": 14,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 8
+              },
+              "end": {
+                "line": 1,
+                "column": 14
+              }
+            },
+            "openingElement": {
+              "type": "JSXOpeningElement",
+              "start": 8,
+              "end": 13,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 8
+                },
+                "end": {
+                  "line": 1,
+                  "column": 13
+                }
+              },
+              "name": {
+                "type": "JSXIdentifier",
+                "start": 8,
+                "end": 11,
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 11
+                  }
+                },
+                "name": "div"
+              },
+              "attributes": []
+            },
+            "children": [],
+            "extra": {
+              "parenthesized": true,
+              "parenStart": 7
+            }
+          },
+          "alternate": {
+            "type": "JSXElement",
+            "start": 18,
+            "end": 24,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 18
+              },
+              "end": {
+                "line": 1,
+                "column": 24
+              }
+            },
+            "openingElement": {
+              "type": "JSXOpeningElement",
+              "start": 18,
+              "end": 23,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 18
+                },
+                "end": {
+                  "line": 1,
+                  "column": 23
+                }
+              },
+              "name": {
+                "type": "JSXIdentifier",
+                "start": 18,
+                "end": 21,
+                "loc": {
+                  "start": {
+                    "line": 1,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 1,
+                    "column": 21
+                  }
+                },
+                "name": "div"
+              },
+              "attributes": []
+            },
+            "children": []
+          }
+        }
+      }
+    ],
+    "directives": []
+  }
+}
