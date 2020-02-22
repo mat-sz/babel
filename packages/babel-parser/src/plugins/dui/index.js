@@ -167,33 +167,8 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       const openingElement = this.duiParseOpeningElementAt(startPos, startLoc);
 
       if (!openingElement.selfClosing) {
-        contents: for (;;) {
-          switch (this.state.type) {
-            case tt.braceR:
-              this.next();
-              break contents;
-
-            case tt.string:
-            case tt.name:
-            case tt.at:
-              children.push(this.parseExprAtom());
-              break;
-
-            case tt.braceL: {
-              const node = this.startNode();
-              this.next();
-              if (this.match(tt.ellipsis)) {
-                children.push(this.duiParseSpreadChild(node));
-              } else {
-                children.push(this.duiParseExpressionContainer(node));
-              }
-
-              break;
-            }
-            // istanbul ignore next - should never happen
-            default:
-              throw this.unexpected();
-          }
+        while (!this.eat(tt.braceR)) {
+          children.push(this.parseExprAtom());
         }
       }
 
