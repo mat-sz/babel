@@ -268,21 +268,25 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       }
 
       if (isPossibleElement && checkParameterList) {
-        if (!this.eat(tt.parenL) || !this.eat(tt.name)) {
+        if (!this.eat(tt.parenL)) {
           isPossibleElement = false;
         }
 
-        if (this.match(tt.slash)) {
-          while (true) {
-            this.next();
-            if (!this.match(tt.name) && !this.match(tt.slash)) {
-              if (!this.match(tt.colon)) {
-                isPossibleElement = false;
+        if (this.eat(tt.name)) {
+          if (this.match(tt.slash)) {
+            while (true) {
+              this.next();
+              if (!this.match(tt.name) && !this.match(tt.slash)) {
+                if (!this.match(tt.colon)) {
+                  isPossibleElement = false;
+                }
+                break;
               }
-              break;
             }
+          } else if (!this.match(tt.colon)) {
+            isPossibleElement = false;
           }
-        } else if (!this.match(tt.colon)) {
+        } else {
           isPossibleElement = false;
         }
       }
