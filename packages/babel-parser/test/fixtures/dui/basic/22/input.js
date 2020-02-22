@@ -1,0 +1,1 @@
+div (fn: (() => "hello")) { children }

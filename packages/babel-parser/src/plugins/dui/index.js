@@ -113,7 +113,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
         return this.finishNode(node, "JSXSpreadAttribute");
       }
       node.name = this.duiParseNamespacedName();
-      node.value = this.eat(tt.colon) ? this.parseExprAtom() : null;
+      node.value = this.eat(tt.colon) ? this.parseExprSubscripts() : null;
       return this.finishNode(node, "JSXAttribute");
     }
 
@@ -168,7 +168,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
       if (!openingElement.selfClosing) {
         while (!this.eat(tt.braceR)) {
-          children.push(this.parseExprAtom());
+          children.push(this.parseExprSubscripts());
         }
       }
 
