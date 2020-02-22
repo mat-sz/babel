@@ -168,7 +168,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
       if (!openingElement.selfClosing) {
         while (!this.eat(tt.braceR)) {
-          children.push(this.parseExprSubscripts());
+          children.push(this.parseMaybeAssign());
         }
       }
 
