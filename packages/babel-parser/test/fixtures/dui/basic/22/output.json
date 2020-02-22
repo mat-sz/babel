@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 38,
+  "end": 36,
   "loc": {
     "start": {
       "line": 1,
@@ -9,13 +9,13 @@
     },
     "end": {
       "line": 1,
-      "column": 38
+      "column": 36
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 38,
+    "end": 36,
     "loc": {
       "start": {
         "line": 1,
@@ -23,7 +23,7 @@
       },
       "end": {
         "line": 1,
-        "column": 38
+        "column": 36
       }
     },
     "sourceType": "script",
@@ -32,7 +32,7 @@
       {
         "type": "ExpressionStatement",
         "start": 0,
-        "end": 38,
+        "end": 36,
         "loc": {
           "start": {
             "line": 1,
@@ -40,13 +40,13 @@
           },
           "end": {
             "line": 1,
-            "column": 38
+            "column": 36
           }
         },
         "expression": {
           "type": "JSXElement",
           "start": 0,
-          "end": 38,
+          "end": 36,
           "loc": {
             "start": {
               "line": 1,
@@ -54,13 +54,13 @@
             },
             "end": {
               "line": 1,
-              "column": 38
+              "column": 36
             }
           },
           "openingElement": {
             "type": "JSXOpeningElement",
             "start": 0,
-            "end": 27,
+            "end": 25,
             "loc": {
               "start": {
                 "line": 1,
@@ -68,7 +68,7 @@
               },
               "end": {
                 "line": 1,
-                "column": 27
+                "column": 25
               }
             },
             "name": {
@@ -92,7 +92,7 @@
               {
                 "type": "JSXAttribute",
                 "start": 5,
-                "end": 24,
+                "end": 22,
                 "loc": {
                   "start": {
                     "line": 1,
@@ -100,7 +100,7 @@
                   },
                   "end": {
                     "line": 1,
-                    "column": 24
+                    "column": 22
                   }
                 },
                 "name": {
@@ -121,16 +121,16 @@
                 },
                 "value": {
                   "type": "ArrowFunctionExpression",
-                  "start": 10,
-                  "end": 23,
+                  "start": 9,
+                  "end": 22,
                   "loc": {
                     "start": {
                       "line": 1,
-                      "column": 10
+                      "column": 9
                     },
                     "end": {
                       "line": 1,
-                      "column": 23
+                      "column": 22
                     }
                   },
                   "id": null,
@@ -139,16 +139,16 @@
                   "params": [],
                   "body": {
                     "type": "StringLiteral",
-                    "start": 16,
-                    "end": 23,
+                    "start": 15,
+                    "end": 22,
                     "loc": {
                       "start": {
                         "line": 1,
-                        "column": 16
+                        "column": 15
                       },
                       "end": {
                         "line": 1,
-                        "column": 23
+                        "column": 22
                       }
                     },
                     "extra": {
@@ -156,10 +156,6 @@
                       "raw": "\"hello\""
                     },
                     "value": "hello"
-                  },
-                  "extra": {
-                    "parenthesized": true,
-                    "parenStart": 9
                   }
                 }
               }
@@ -168,16 +164,16 @@
           "children": [
             {
               "type": "Identifier",
-              "start": 28,
-              "end": 36,
+              "start": 26,
+              "end": 34,
               "loc": {
                 "start": {
                   "line": 1,
-                  "column": 28
+                  "column": 26
                 },
                 "end": {
                   "line": 1,
-                  "column": 36
+                  "column": 34
                 },
                 "identifierName": "children"
               },

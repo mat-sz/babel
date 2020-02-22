@@ -1,1 +1,1 @@
-div (fn: (() => "hello")) { children }
+div (fn: () => "hello") { children }
