@@ -262,15 +262,16 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
           expectName = !expectName;
         }
+      } else {
+        isPossibleElement = this.match(tt.name) || this.match(tt.at);
+        this.next();
       }
 
       if (isPossibleElement && checkParameterList) {
-        this.next();
-        if (!this.match(tt.name)) {
+        if (!this.eat(tt.parenL) || !this.eat(tt.name)) {
           isPossibleElement = false;
         }
 
-        this.next();
         if (this.match(tt.slash)) {
           while (true) {
             this.next();
