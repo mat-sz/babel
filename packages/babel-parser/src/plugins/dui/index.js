@@ -1,7 +1,5 @@
 // @flow
 
-import * as charCodes from "charcodes";
-
 import type Parser from "../../parser";
 import type { ExpressionErrors } from "../../parser/util";
 import { types as tt } from "../../tokenizer/types";
@@ -158,7 +156,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       }
 
       node.attributes = attributes;
-      this.nextToken();
+      this.expect(tt.braceL);
       return this.finishNode(node, "JSXOpeningElement");
     }
 
@@ -230,65 +228,19 @@ export default (superClass: Class<Parser>): Class<Parser> =>
       return this.duiParseElementAt(startPos, startLoc);
     }
 
-    isElementLookahead() {
+    duiCheckElement() {
       if (!this.match(tt.name) && !this.match(tt.at)) return false;
 
       const old = this.state;
       this.state = old.clone(true);
       this.isLookahead = true;
 
-      const lookaheadCharCode = this.lookaheadCharCode();
       let isPossibleElement = true;
-      let checkParameterList = lookaheadCharCode === charCodes.leftParenthesis;
 
-      if (
-        lookaheadCharCode !== charCodes.leftCurlyBrace &&
-        lookaheadCharCode !== charCodes.leftParenthesis
-      ) {
-        let expectName = false;
-
-        while (true) {
-          this.next();
-          if (expectName) {
-            if (!this.match(tt.name)) {
-              isPossibleElement = false;
-              break;
-            }
-          } else if (!this.match(tt.slash) && !this.match(tt.dot)) {
-            isPossibleElement = this.match(tt.braceL) || this.match(tt.parenL);
-            checkParameterList = this.match(tt.parenL);
-            break;
-          }
-
-          expectName = !expectName;
-        }
-      } else {
-        isPossibleElement = this.match(tt.name) || this.match(tt.at);
-        this.next();
-      }
-
-      if (isPossibleElement && checkParameterList) {
-        if (!this.eat(tt.parenL)) {
-          isPossibleElement = false;
-        }
-
-        if (this.eat(tt.name)) {
-          if (this.match(tt.slash)) {
-            while (true) {
-              this.next();
-              if (!this.match(tt.name) && !this.match(tt.slash)) {
-                if (!this.match(tt.colon)) {
-                  isPossibleElement = false;
-                }
-                break;
-              }
-            }
-          } else if (!this.match(tt.colon)) {
-            isPossibleElement = false;
-          }
-        } else {
-          isPossibleElement = false;
-        }
+      try {
+        this.duiParseOpeningElementAt(this.state.start, this.state.startLoc);
+      } catch {
+        isPossibleElement = false;
       }
 
       this.isLookahead = false;
@@ -302,7 +254,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // ==================================
 
     parseExprAtom(refExpressionErrors: ?ExpressionErrors): N.Expression {
-      if (this.isElementLookahead()) {
+      if (this.duiCheckElement()) {
         return this.duiParseElement();
       }
 
