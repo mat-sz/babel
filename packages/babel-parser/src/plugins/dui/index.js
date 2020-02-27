@@ -6,7 +6,7 @@ import { types as tt } from "../../tokenizer/types";
 import * as N from "../../types";
 import type { Position } from "../../util/location";
 
-function isFragment(object: ?N.DUIElement): boolean {
+function isFragment(object: ?N.JSXElement): boolean {
   return object ? object.type === "JSXOpeningFragment" : false;
 }
 
@@ -14,7 +14,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
   class extends superClass {
     // Parse next token as DUI identifier
 
-    duiParseIdentifier(): N.DUIIdentifier {
+    duiParseIdentifier(): N.JSXIdentifier {
       const node = this.startNode();
       if (this.match(tt.name)) {
         node.name = this.state.value;
@@ -29,7 +29,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
     // Parse namespaced identifier.
 
-    duiParseNamespacedName(): N.DUINamespacedName {
+    duiParseNamespacedName(): N.JSXNamespacedName {
       const startPos = this.state.start;
       const startLoc = this.state.startLoc;
       const name = this.duiParseIdentifier();
@@ -45,9 +45,9 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // or single identifier.
 
     duiParseElementName():
-      | N.DUIIdentifier
-      | N.DUINamespacedName
-      | N.DUIMemberExpression {
+      | N.JSXIdentifier
+      | N.JSXNamespacedName
+      | N.JSXMemberExpression {
       const startPos = this.state.start;
       const startLoc = this.state.startLoc;
       let node = this.duiParseNamespacedName();
@@ -67,7 +67,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // and so it should start at the end of last read token (left brace) and finish
     // at the beginning of the next one (right brace).
 
-    duiParseEmptyExpression(): N.DUIEmptyExpression {
+    duiParseEmptyExpression(): N.JSXEmptyExpression {
       const node = this.startNodeAt(
         this.state.lastTokEnd,
         this.state.lastTokEndLoc,
@@ -82,7 +82,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
     // Parse DUI spread child
 
-    duiParseSpreadChild(node: N.DUISpreadChild): N.DUISpreadChild {
+    duiParseSpreadChild(node: N.JSXSpreadChild): N.JSXSpreadChild {
       this.next(); // ellipsis
       node.expression = this.parseExpression();
       this.expect(tt.braceR);
@@ -93,8 +93,8 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // Parses DUI expression enclosed into curly brackets.
 
     duiParseExpressionContainer(
-      node: N.DUIExpressionContainer,
-    ): N.DUIExpressionContainer {
+      node: N.JSXExpressionContainer,
+    ): N.JSXExpressionContainer {
       if (this.match(tt.braceR)) {
         node.expression = this.duiParseEmptyExpression();
       } else {
@@ -106,7 +106,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
     // Parses following DUI attribute name-value pair.
 
-    duiParseAttribute(): N.DUIAttribute {
+    duiParseAttribute(): N.JSXAttribute {
       const node = this.startNode();
       if (this.eat(tt.ellipsis)) {
         node.argument = this.parseMaybeAssign();
@@ -122,7 +122,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     duiParseOpeningElementAt(
       startPos: number,
       startLoc: Position,
-    ): N.DUIOpeningElement {
+    ): N.JSXOpeningElement {
       const node = this.startNodeAt(startPos, startLoc);
       if (this.match(tt.at)) {
         this.expect(tt.at);
@@ -134,9 +134,9 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     }
 
     duiParseOpeningElementAfterName(
-      node: N.DUIOpeningElement,
-    ): N.DUIOpeningElement {
-      const attributes: N.DUIAttribute[] = [];
+      node: N.JSXOpeningElement,
+    ): N.JSXOpeningElement {
+      const attributes: N.JSXAttribute[] = [];
 
       if (this.match(tt.parenL)) {
         this.next();
@@ -161,7 +161,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
     // Parses entire DUI element, including it"s opening
     // ("tag {"), attributes, contents and closing "}".
 
-    duiParseElementAt(startPos: number, startLoc: Position): N.DUIElement {
+    duiParseElementAt(startPos: number, startLoc: Position): N.JSXElement {
       const node = this.startNodeAt(startPos, startLoc);
       const children = [];
       const openingElement = this.duiParseOpeningElementAt(startPos, startLoc);
@@ -188,7 +188,7 @@ export default (superClass: Class<Parser>): Class<Parser> =>
 
     // Parses entire DUI element from current position.
 
-    duiParseElement(): N.DUIElement {
+    duiParseElement(): N.JSXElement {
       const startPos = this.state.start;
       const startLoc = this.state.startLoc;
       return this.duiParseElementAt(startPos, startLoc);

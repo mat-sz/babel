@@ -897,28 +897,6 @@ export type JSXOpeningFragment = Node;
 export type JSXClosingFragment = Node;
 export type JSXFragment = Node;
 
-// DUI (TODO: Not in spec)
-
-export type DUIIdentifier = Node;
-export type DUINamespacedName = Node;
-export type DUIMemberExpression = Node;
-export type DUIEmptyExpression = Node;
-export type DUISpreadChild = Node;
-export type DUIExpressionContainer = Node;
-export type DUIAttribute = Node;
-export type DUIOpeningElement = NodeBase & {
-  type: "DUIOpeningElement",
-  name: DUINamespacedName | DUIMemberExpression,
-  typeParameters?: ?TypeParameterInstantiationBase, // TODO: Not in spec
-  attributes: $ReadOnlyArray<DUIAttribute>,
-  selfClosing: boolean,
-};
-export type DUIClosingElement = Node;
-export type DUIElement = Node;
-export type DUIOpeningFragment = Node;
-export type DUIClosingFragment = Node;
-export type DUIFragment = Node;
-
 // Flow/TypeScript common (TODO: Not in spec)
 
 export type TypeAnnotationBase = NodeBase & {
